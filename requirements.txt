@@ -1,0 +1,6 @@
+pip~=23.0.1
+Django~=3.2
+djangorestframework~=3.14.0
+Markdown~=3.4.1
+django-filter~=22.1
+
