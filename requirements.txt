@@ -3,4 +3,4 @@ Django~=3.2
 djangorestframework~=3.14.0
 Markdown~=3.4.1
 django-filter~=22.1
-
+psycopg2-binary~=2.9.5
