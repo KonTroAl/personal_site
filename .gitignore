@@ -1,5 +1,7 @@
 #Usser's exceptions
 .idea
+personal_site/mainapp/src/api_key.py
+personal_site/personal_site/key.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
