@@ -1,32 +1,30 @@
 import requests
+from geopy import geocoders
 from api_key import API_KEY
+from pprint import pprint
+from datetime import datetime
 """
 В дальнейшем наименование города будет приходить с frontend
 """
-city = 'Surgut'
+city = 'Сургут'
+
+def geo_pos(city):
+    geolocator = geocoders.Nominatim(user_agent='personal_site')
+    lat = str(geolocator.geocode(city).latitude)
+    lon = str(geolocator.geocode(city).longitude)
+    return lat, lon
 
 def forecast(city):
-    # Текстовый поиск города и его ключа/id
-    city_url = f'http://dataservice.accuweather.com/locations/v1/cities/search?apikey={API_KEY}&q={city}'
-    j_data_city = requests.get(city_url).json()
-    id_city = j_data_city[0]['Key']
+    # Поиск кооридинат города
+    lat, lon = geo_pos(city)
 
-    # Поиск погоды в городе по ключу/id
-    weather_url = f'http://dataservice.accuweather.com/forecasts/v1/daily/1day/{id_city}?apikey={API_KEY}&metric=True'
-    j_data_forecast = requests.get(weather_url).json()
-    weather_headline = j_data_forecast['Headline']
-    weather_daily_forecasts = j_data_forecast['DailyForecasts']
-    temperature = weather_daily_forecasts[0]['Temperature']
-
-    # Заполнение словаря необходимыми данными для дальнейшей работы
-    weather = {
-        'Text': weather_headline['Text'],
-        'Temperature': {
-            'Maximum': temperature['Maximum']['Value'],
-            'Minimum': temperature['Minimum']['Value'],
-        }
-    }
-    return weather
+    weather_url = f'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}'
+    j_data_weather = requests.get(weather_url, headers={'X-Yandex-API-Key': API_KEY}).json()
+    weather_dict = j_data_weather['fact']
+    my_time = (datetime.fromtimestamp(int(weather_dict['uptime'])).strftime('%Y-%m-%d %H:%M:%S'))
+    weather_dict['uptime'] = my_time
+    return weather_dict
 
 
 
+pprint(forecast(city))
