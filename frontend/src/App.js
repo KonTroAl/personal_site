@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import WeatherItem from './components/Weather';
+import Menu from './components/Menu.js';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -47,9 +50,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <WeatherItem weather={this.state.weather} />
-      </div >
+      <Router>
+        <div class='container'>
+          <div class='header'>
+            <Menu />
+          </div>
+          <div class='main_part'>
+            <Routes>
+              <Route path='/' element={<WeatherItem weather={this.state.weather} />}></Route>
+            </Routes>
+          </div>
+          <div class='footer'></div>
+        </div>
+      </Router>
     )
   }
 }
