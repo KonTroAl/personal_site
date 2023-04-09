@@ -23,6 +23,7 @@ def forecast(city):
     weather_dict = j_data_weather['fact']
     my_time = (datetime.fromtimestamp(int(weather_dict['uptime'])).strftime('%Y-%m-%d %H:%M:%S'))
     weather_dict['uptime'] = my_time
+    weather_dict['city'] = city
     return weather_dict
 
 
